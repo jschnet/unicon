@@ -1,0 +1,591 @@
+### This file created by IYACC 1.0
+### Please send bug reports to raypereda@hotmail.com
+#define YYPREFIX "yy"
+#line 7 "flexgram.y"
+global rulenumber
+#line 6 "flexgram.icn"
+$define OR 257
+$define BACKSLASH 258
+$define SQUAREBRACKETS 259
+$define DOT 260
+$define CSET 261
+$define QUOTES 262
+$define LINEBEGIN 263
+$define LINEEND 264
+$define OPTIONAL 265
+$define ZEROORMORE 266
+$define ONEORMORE 267
+$define PARENTHESES 268
+$define FORWARDSLASH 269
+$define CURLBRACKETS 270
+$define OCCURRENCES 271
+$define CLOSEPARENTHESES 272
+$define PERCENTS 273
+$define CHARACTER 274
+$define COMMENT 275
+$define ACTION 276
+$define BEGINNING 277
+$define ENDING 278
+$define QUESTION 279
+$define STAR 280
+$define PLUS 281
+$define OREXPR 282
+$define PARENTHETIC 283
+$define FORSLASH 284
+$define EXPRESSION 285
+$define EXPRTREE 286
+$define NEWLINE 287
+$define CONCATEXPR 288
+$define CONCAT 289
+$define CSETUNION 290
+$define CSETDIFFERENCE 291
+$define YYERRCODE 256
+procedure init() 
+  yylhs := [                                        -1,
+    0,    1,    1,    1,    1,    3,    4,    4,    2,    2,
+    5,    5,    6,    6,    8,    8,    8,    7,    7,    7,
+    7,    7,    7,    7,    7,    7,    7,    7,    7,    7,
+    7,    7,    9,   10,   11,   12,   13,   14,   15,   16,
+  ]
+  yylen := [                            2,
+    1,    3,    2,    2,    1,    1,    2,    1,    2,    1,
+    3,    1,    2,    1,    1,    3,    3,    1,    1,    1,
+    1,    1,    1,    1,    1,    1,    1,    3,    2,    1,
+    1,    1,    2,    2,    2,    2,    2,    3,    3,    2,
+  ]
+  yydefred := [                         0,
+   19,   22,   15,   18,    0,    0,   21,    0,    0,    1,
+    0,    0,    6,    0,   12,    0,    0,   23,   24,   25,
+   26,   27,   30,   31,   32,    0,    0,    9,    0,    4,
+    0,    0,   34,   35,   36,   37,    0,   40,   13,    0,
+    0,    0,   38,    2,   11,    0,    0,    0,    0,
+  ]
+  yydgoto := [                          9,
+   10,   11,   12,   13,   14,   15,   40,   17,   18,   19,
+   20,   21,   22,   23,   24,   25,
+  ]
+  yysindex := [                      -256,
+    0,    0,    0,    0, -235, -235,    0, -287,    0,    0,
+ -235, -287,    0, -287,    0, -215, -280,    0,    0,    0,
+    0,    0,    0,    0,    0, -165, -192,    0, -287,    0,
+ -235, -235,    0,    0,    0,    0, -235,    0,    0, -165,
+ -244, -244,    0,    0,    0, -165, -165, -280, -280,
+  ]
+  yyrindex := [                         0,
+    0,    0,    0,    0,    0,    0,    0,   94,    0,    0,
+    0,   19,    0,   21,    0,   13,    1,    0,    0,    0,
+    0,    0,    0,    0,    0,   56,    0,    0,   24,    0,
+   15,    0,    0,    0,    0,    0,    0,    0,    0,   58,
+    0,    0,    0,    0,    0,   63,   64,   29,   57,
+  ]
+  yygindex := [                         0,
+    0,    8,   25,    0,    0,   -1,    3,   42,    0,    0,
+    0,    0,    0,    0,    0,    0,
+  ]
+$define YYTABLESIZE 368
+  yytable := [                          8,
+   20,    1,   16,    2,    3,    4,    5,   26,   27,   41,
+   42,    6,   14,   16,    7,   28,    3,    7,    5,   30,
+    8,   31,    1,    3,    2,    3,    4,    5,   16,   45,
+    8,    0,    6,   16,   46,   29,   44,    0,    7,   47,
+    0,   32,    1,    0,    2,    3,    4,    5,   33,   34,
+   35,   36,    6,   37,   38,   33,   17,   29,    7,    0,
+   39,    0,   28,   39,   32,    1,    0,    2,    3,    4,
+    5,   33,   34,   35,   36,    6,   37,   38,    0,   43,
+    0,    7,   48,   49,    0,    0,    0,    0,    0,    0,
+    0,   32,    1,   10,    2,    3,    4,    5,   33,   34,
+   35,   36,    6,   37,   38,    0,    0,    0,    7,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,   20,   20,    0,
+   20,   20,   20,   20,   20,   20,   20,   20,   20,   20,
+   20,    0,   20,    0,   20,    0,   20,    0,    0,    0,
+    0,    0,    0,    0,    0,   16,   16,   20,   16,   16,
+   16,   16,   16,   16,   16,   16,   16,   16,   16,   14,
+   16,    7,   16,    0,   16,    0,    0,    0,    0,    0,
+    0,    0,    0,   17,   17,   16,   17,   17,   17,   17,
+   17,   17,   17,   17,   17,   17,   17,   33,   17,   29,
+   17,   33,   17,   29,   28,   39,    0,    0,   28,   39,
+    0,    0,   33,   17,   29,    0,    0,    0,    0,   28,
+   39,   10,    0,   10,   10,   10,   10,    0,    0,    0,
+    0,   10,    0,    0,    0,    0,    0,   10,
+  ]
+  yycheck := [                        287,
+    0,  258,    0,  260,  261,  262,  263,    5,    6,  290,
+  291,  268,    0,   11,    0,    8,  261,  274,    0,   12,
+    0,   14,  258,    0,  260,  261,  262,  263,    0,   31,
+  287,   -1,  268,   31,   32,   11,   29,   -1,  274,   37,
+   -1,  257,  258,   -1,  260,  261,  262,  263,  264,  265,
+  266,  267,  268,  269,  270,    0,    0,    0,  274,   -1,
+  276,   -1,    0,    0,  257,  258,   -1,  260,  261,  262,
+  263,  264,  265,  266,  267,  268,  269,  270,   -1,  272,
+   -1,  274,   41,   42,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,  257,  258,    0,  260,  261,  262,  263,  264,  265,
+  266,  267,  268,  269,  270,   -1,   -1,   -1,  274,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,  257,  258,   -1,
+  260,  261,  262,  263,  264,  265,  266,  267,  268,  269,
+  270,   -1,  272,   -1,  274,   -1,  276,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,  257,  258,  287,  260,  261,
+  262,  263,  264,  265,  266,  267,  268,  269,  270,  287,
+  272,  287,  274,   -1,  276,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,  257,  258,  287,  260,  261,  262,  263,
+  264,  265,  266,  267,  268,  269,  270,  272,  272,  272,
+  274,  276,  276,  276,  272,  272,   -1,   -1,  276,  276,
+   -1,   -1,  287,  287,  287,   -1,   -1,   -1,   -1,  287,
+  287,  258,   -1,  260,  261,  262,  263,   -1,   -1,   -1,
+   -1,  268,   -1,   -1,   -1,   -1,   -1,  274,
+  ]
+$define YYFINAL 9
+$define YYMAXTOKEN 291
+  yyname := [
+"end-of-file",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"OR","BACKSLASH","SQUAREBRACKETS",
+"DOT","CSET","QUOTES","LINEBEGIN","LINEEND","OPTIONAL","ZEROORMORE","ONEORMORE",
+"PARENTHESES","FORWARDSLASH","CURLBRACKETS","OCCURRENCES","CLOSEPARENTHESES",
+"PERCENTS","CHARACTER","COMMENT","ACTION","BEGINNING","ENDING","QUESTION",
+"STAR","PLUS","OREXPR","PARENTHETIC","FORSLASH","EXPRESSION","EXPRTREE",
+"NEWLINE","CONCATEXPR","CONCAT","CSETUNION","CSETDIFFERENCE",
+  ]
+  yyrule := [
+"$accept : Goal",
+"Goal : Start",
+"Start : Newlines Percentexp Newlines",
+"Start : Newlines Percentexp",
+"Start : Percentexp Newlines",
+"Start : Percentexp",
+"Percentexp : Regexps",
+"Regexps : Exprs Newlines",
+"Regexps : Exprs",
+"Newlines : NEWLINE Newlines",
+"Newlines : NEWLINE",
+"Exprs : Exprs Newlines OneExpr",
+"Exprs : OneExpr",
+"OneExpr : Expr ACTION",
+"OneExpr : Expr",
+"Cset : CSET",
+"Cset : Cset CSETUNION Cset",
+"Cset : Cset CSETDIFFERENCE Cset",
+"Expr : QUOTES",
+"Expr : BACKSLASH",
+"Expr : Cset",
+"Expr : CHARACTER",
+"Expr : DOT",
+"Expr : BeginLine",
+"Expr : EndLine",
+"Expr : Question",
+"Expr : Star",
+"Expr : Plus",
+"Expr : Expr OR Expr",
+"Expr : Expr Expr",
+"Expr : Parenthetic",
+"Expr : ForSlash",
+"Expr : Occurrence",
+"BeginLine : LINEBEGIN Expr",
+"EndLine : Expr LINEEND",
+"Question : Expr OPTIONAL",
+"Star : Expr ZEROORMORE",
+"Plus : Expr ONEORMORE",
+"Parenthetic : PARENTHESES Expr CLOSEPARENTHESES",
+"ForSlash : Expr FORWARDSLASH Expr",
+"Occurrence : Expr CURLBRACKETS",
+  ]
+
+end
+
+#####################################################################
+#####################################################################
+invocable all    # need to look up semantic actions by name
+
+global yytext    # user variable to return contextual strings
+global yyval     # used to return semantic vals from action routines
+global yylval    # the 'lval' (result) I got from yylex()
+global yydebug   # (boolean) do I want debug output?
+global yynerrs   # (integer) number of errors so far
+global yyerrflag # (integer) was there an error?
+global yychar    # (integer) the current working character
+global action    # maps an integer to a semantic action procedure
+
+global yylhs
+global yylen
+global yydefred
+global yydgoto
+global yysindex
+global yyrindex
+global yygindex
+global yytable
+global yycheck
+global yyname
+global yyrule
+
+global statestk         # state stack
+global valstk           # value stack
+################################################################
+# procedure: init_stacks : allocate and prepare stacks
+################################################################
+procedure init_stacks()
+  local i
+  statestk := []
+  valstk := []
+  yyval  := 0 
+  yylval := 0 
+  action := list(1000, action_null)  # remove hard coded 1000 later
+  every i := 1 to 1000 do action[i] := proc("action_" || i)
+end
+
+#line 134 "flexgram.y"
+
+procedure yyerror(s)
+   #
+   # Eventually want to use merr for better error messaging.
+   #
+
+  write(&errout, s, " on line ", yylineno, " token '", yytext, "'")
+  return 0
+end
+#line 280 "flexgram.icn"
+$define YYACCEPT return 0
+$define YYABORT return 1
+################################################################
+# procedure: yyparse : parse input and execute indicated items
+################################################################
+procedure yyparse()
+  local yyn        # next next thing to do
+  local yym        #
+  local yystate    # current parsing state from state table
+  local yys        # current token string
+  local doaction   # set to 1 if there need to execute action
+  local token      # current token
+
+  if /yytable then init() 
+  init_stacks() 
+  yynerrs   := 0 
+  yyerrflag := 0 
+  yychar    := -1           # impossible char forces a read
+  yystate   := 0            # initial state
+  push(statestk, yystate)   # save it
+
+  repeat { # until parsing is done, either correctly, or w/error
+    doaction := 1 
+
+    ##### NEXT ACTION (from reduction table)
+	yyn := yydefred[yystate+1]
+
+    while yyn = 0 do {
+
+      if yychar < 0 then {   # we want a char?
+        yychar := yylex()    # get next token
+        ##### ERROR CHECK ####
+        if yychar < 0 then { # it it didn't work/error
+          yychar := 0        # change it to default string (no -1!)
+          if \yydebug = 1 then yylexdebug(yystate, yychar) 
+          }
+        } # yychar < 0
+	  
+      yyn := yysindex[yystate+1]  # get amount to shift by (shift index)
+
+      if (yyn ~= 0)           & ((yyn +:= yychar) >= 0) & 
+         (yyn <= YYTABLESIZE) & (yycheck[yyn+1] = yychar) then {
+		
+        ##### NEXT STATE ####
+        yystate := yytable[yyn+1] # we are in a new state
+        push(statestk, yystate)   # save it
+        push(valstk, yylval)      # push our lval as the input for next rule
+        yychar := -1              # since we have 'eaten' a token, say we need another
+        if yyerrflag > 0 then     # have we recovered an error?
+           yyerrflag -:= 1        # give ourselves credit
+        doaction := 0             # but don't process yet
+        break                     # quit the yyn=0 loop
+        }
+
+    yyn := yyrindex[yystate+1]    # reduce
+
+    if (yyn ~= 0)           & ((yyn +:= yychar) >= 0) &
+       (yyn <= YYTABLESIZE) & (yycheck[yyn+1] = yychar) then {
+      # e reduced!
+      yyn      := yytable[yyn+1] 
+      doaction := 1  # get ready to execute
+      break          # drop down to actions
+      }
+    else { #ERROR RECOVERY
+      if yyerrflag == 0 then {
+        (\yyerror | write)("syntax error") 
+        yynerrs +:= 1 
+      }
+      if yyerrflag < 3 then {     # low error count?
+        yyerrflag := 3 
+        repeat { #do until break
+          if *statestk < 1 then {  # check for under & overflow here
+            (\yyerror | write)("stack underflow. aborting...")   # note lower case 's'
+            return 1 
+          }
+          yyn := yysindex[statestk[1]] 
+          if ((yyn ~= 0) & (yyn +:= YYERRCODE) >= 0 &
+                    yyn <= YYTABLESIZE & yycheck[yyn+1] == YYERRCODE) then {
+            yystate := yytable[yyn+1] 
+            push(statestk, yystate) 
+            push(valstk, yylval) 
+            doaction := 0 
+            break 
+          }
+          else {
+            if *statestk = 0 then { # check for under & overflow here
+              write("Stack underflow. aborting...") # capital 'S'
+              return 1 
+            }
+            pop(statestk) 
+            pop(valstk) 
+            }
+          }
+        }
+      else  # discard this token
+        {
+        if yychar = 0 then return 1  # yyabort
+        if \yydebug = 1 then {
+          yys := &null 
+          if yychar <= YYMAXTOKEN then yys := yyname[yychar+1] 
+          if integer(yys) & yys = 0 then yys := "illegal-symbol" 
+          write("state ",  yystate, ", error recovery discards token ",
+                yychar, " (", yys, ")") 
+          }
+        yychar := -1       # read another
+        }
+      } # end error recovery
+      yyn := yydefred[yystate+1] 
+    }# yyn = 0 loop
+
+    if doaction = 0 then   # any reason not to proceed?
+      next                 # skip action
+
+    yym := yylen[yyn+1]    # get count of terminals on rhs
+    yyval := valstk[yym]   # get current semantic value
+    if arv := action[yyn]() then return arv # execute the semantic action
+
+    ##### Now let's reduce... ####
+    every 1 to yym do pop(statestk)# we just reduced yylen states
+    yystate := statestk[1]        # get new state
+
+    every 1 to yym do pop(valstk) # corresponding value drop
+    yym := yylhs[yyn+1]           # select next TERMINAL(on lhs)
+    if yystate = 0 & yym = 0 then {
+                                  # done? 'rest' state and at first TERMINAL
+      yystate := YYFINAL          # explicitly say we're done
+      push(statestk, YYFINAL)     # and save it
+      push(valstk, yyval)         # also save the semantic value of parsing
+      if yychar < 0 then {        # we want another character?
+        yychar := yylex()         # get next character
+        if yychar < 0 then yychar := 0   #clean, if necessary
+      }
+      if yychar = 0 then break    # Good exit (if lex returns 0  -)
+                                  # quit the loop--all DONE
+    } # if yystate
+    else {                        #else not done yet
+      # get next state and push, for next yydefred[]
+      yyn := yygindex[yym+1]        # find out where to go
+      if (yyn ~= 0)           & ((yyn +:= yystate) >= 0) &
+         (yyn <= YYTABLESIZE) & (yycheck[yyn+1] = yystate) then {
+        yystate := yytable[yyn+1]   # get new state
+        }
+      else {
+        yystate := yydgoto[yym+1]   # else go to new defred
+	     }
+      push(statestk, yystate)       # going again, so push state & val...
+      push(valstk, yyval)           # for next action
+      }
+    } # main loop
+
+  return 0 # yyaccept!!
+end
+
+### end of procedure parse() ######################################
+
+### start semantic actions ########################################
+
+procedure action_null()
+  #write("null action")
+end
+
+procedure action_1()
+#line 48 "flexgram.y"
+ labelaut(valstk[1]); createicon(valstk[1]) 
+end
+
+procedure action_2()
+#line 50 "flexgram.y"
+ yyval := convert(valstk[2]) 
+end
+
+procedure action_3()
+#line 51 "flexgram.y"
+ yyval := convert(valstk[1]) 
+end
+
+procedure action_4()
+#line 52 "flexgram.y"
+ yyval := convert(valstk[2]) 
+end
+
+procedure action_5()
+#line 53 "flexgram.y"
+ yyval := convert(valstk[1]) 
+end
+
+procedure action_7()
+#line 58 "flexgram.y"
+ yyval := valstk[2] 
+end
+
+procedure action_8()
+#line 59 "flexgram.y"
+ yyval := valstk[1] 
+end
+
+procedure action_11()
+#line 65 "flexgram.y"
+ yyval := alcnode(EXPRTREE, valstk[3], valstk[1]) 
+end
+
+procedure action_12()
+#line 66 "flexgram.y"
+ yyval := valstk[1] 
+end
+
+procedure action_13()
+#line 69 "flexgram.y"
+ yyval := alcnode(EXPRESSION, valstk[2], alcleaf(ACTION, yylval.s))
+end
+
+procedure action_14()
+#line 71 "flexgram.y"
+ yyval := alcnode(EXPRESSION, valstk[1], alcleaf(ACTION, "# fail")) 
+end
+
+procedure action_15()
+#line 74 "flexgram.y"
+ yyval := alcleaf(CSET, yylval.s) 
+end
+
+procedure action_16()
+#line 75 "flexgram.y"
+ yyval := valstk[3];
+  write("cset union of ", image(csetfromrecset(valstk[3].text)), " and ", image(csetfromrecset(valstk[1].text)))
+    yyval.text := "[" || string(csetfromrecset(valstk[3].text) ++ csetfromrecset(valstk[1].text)) || "]"
+     write("resulted in ", image(yyval.text)) 
+end
+
+procedure action_17()
+#line 79 "flexgram.y"
+ yyval := valstk[3];
+  write("cset difference of ", image(csetfromrecset(valstk[3].text)), " and ", image(csetfromrecset(valstk[1].text)))
+    yyval.text := "[" || string(csetfromrecset(valstk[3].text) -- csetfromrecset(valstk[1].text)) || "]"
+     write("resulted in ", image(yyval.text)) 
+end
+
+procedure action_18()
+#line 85 "flexgram.y"
+ yyval := alcleaf(QUOTES, yylval.s) 
+end
+
+procedure action_19()
+#line 86 "flexgram.y"
+ yyval := alcleaf(BACKSLASH, yylval.s) 
+end
+
+procedure action_21()
+#line 88 "flexgram.y"
+ yyval := alcleaf(CHARACTER, yylval.s) 
+end
+
+procedure action_22()
+#line 89 "flexgram.y"
+ yyval := alcleaf(DOT) 
+end
+
+procedure action_28()
+#line 95 "flexgram.y"
+ yyval := alcnode(OREXPR, valstk[3], alcleaf(OR), valstk[1]) 
+end
+
+procedure action_29()
+#line 96 "flexgram.y"
+ yyval := alcnode(CONCATEXPR, valstk[2], alcleaf(CONCAT), valstk[1]) 
+end
+
+procedure action_33()
+#line 102 "flexgram.y"
+ yyval := alcnode(BEGINNING, alcleaf(LINEBEGIN), valstk[1]) 
+end
+
+procedure action_34()
+#line 105 "flexgram.y"
+ yyval := alcnode(ENDING, valstk[2], alcleaf(LINEEND)) 
+end
+
+procedure action_35()
+#line 108 "flexgram.y"
+ yyval := alcnode(QUESTION, valstk[2], alcleaf(OPTIONAL)) 
+end
+
+procedure action_36()
+#line 111 "flexgram.y"
+ yyval := alcnode(STAR, valstk[2], alcleaf(ZEROORMORE)) 
+end
+
+procedure action_37()
+#line 114 "flexgram.y"
+ yyval := alcnode(PLUS, valstk[2], alcleaf(ONEORMORE)) 
+end
+
+procedure action_38()
+#line 117 "flexgram.y"
+
+	    yyval := alcnode(PARENTHETIC, alcleaf(PARENTHESES),
+			  valstk[2], alcleaf(CLOSEPARENTHESES))
+	   
+end
+
+procedure action_39()
+#line 123 "flexgram.y"
+
+	   yyval := alcnode(FORSLASH, valstk[3], alcleaf(FORWARDSLASH), valstk[1])
+	   
+end
+
+procedure action_40()
+#line 128 "flexgram.y"
+
+	   yyval := alcnode(OCCURRENCES, valstk[2], alcleaf(CURLBRACKETS, yylval.s))
+	   
+end
+
+#line 595 "flexgram.icn"

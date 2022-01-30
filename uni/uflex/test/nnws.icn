@@ -1,0 +1,518 @@
+#
+# uflex skeleton.
+# do not edit by hand, this file is machine-generated
+#
+
+record edge(symbol, destinations)
+record anode(label, rulenum, edges, epsilon, dot)
+record automata(start, states, accepting)
+
+global yychar, yytext, yyin, yyleng
+
+#
+# matchstrings reads from a specified input file and calls the simulate
+# function repeatedly on smaller and smaller pieces of the input until
+# it finds a match. It reports what parts of the input
+# it could parse and what rule accepted the string.
+#
+
+global stringseq
+
+procedure yyulex(aut)
+local rulenum, readfrom, position, less, currstring, getln
+local maxrule, maxleng
+
+initial {
+   if /yyin then yyin := &input
+   readfrom := yyin
+
+   stringseq := read(readfrom) || "\n"
+
+   while getln := read(readfrom) do
+      stringseq ||:= getln || "\n"
+
+   close(readfrom)
+   }
+
+   repeat {
+      if stringseq == "" then {
+         yychar := -1
+         fail
+         }
+
+      leng := 1
+      while i := simulate(aut, stringseq[1:leng+1]) do {
+         if i > 0 then {
+            maxrule := i
+            maxleng := leng
+         }
+         leng +:= 1
+      }
+      if \maxrule then {
+         yytext := stringseq[1 : maxleng+1]; yyleng := maxleng
+         stringseq := stringseq[maxleng+1:0]
+         if yychar := (semantic_action)[maxrule] () then return yychar
+      } else {
+         stringseq := stringseq[2:0]
+      }
+   }
+end
+
+#
+# simulate(automata, word) determines whether or not the word
+# would be accepted by the given automata. It gets the possible
+# destinations at each symbol of the string and then adds on wherever it
+# could also get if we use any epsilon transitions out of those states.
+# Then the list of accepting states is compared to the reachable set
+# of states to determine if the word was accepted and by which rule.
+#
+procedure simulate(myaut, word)
+local first, currstates, acceptcheck, currsymbol, build, rv
+   currstates := list(0) # should be set()
+   put(currstates, myaut.start) # insert(currstates, myaut.start)
+   acceptcheck := copy(myaut.accepting)
+   currsymbol := word
+   while *currsymbol > 0 do {
+      currstates := getdestinations(currstates, currsymbol)
+      if *currstates = 0 then
+         fail
+      currsymbol := currsymbol[2:0]
+      }
+   while *acceptcheck > 0 do {
+      value1 := pop(acceptcheck)
+      check2 := copy(currstates)
+
+      while *check2 > 0 do {
+         value2 := pop(check2)
+
+         if value1.label = value2.label then {
+            if /rv | rv > value1.rulenum then
+               rv := value1.rulenum
+            }
+         }
+      }
+   if \yydebug>0 then write("simulate() returns ", image(\rv)|0)
+   return \rv | -(currstates[1].label)
+end
+
+#
+# like |||:= except no duplicates. Destructive of L1 but not L2
+#
+procedure yyunionin(L1, L2)
+t1 := table()
+  every x := !L1 do {
+     t1[x.label] := x
+     }
+  every x := !L2 do {
+     if /t1[x.label] then {
+        t1[x.label] := x
+         put(L1, x)
+         }
+      }
+end
+procedure yyonein(L1, L2)
+  if (!L1).label === L2[1].label then fail
+  put(L1, L2[1])
+end
+
+#
+# getdestinations uses the current set of states and
+# simulates one step of automata computation on the given
+# string and returns the resulting set of destinations
+#
+procedure getdestinations(currstates, currsymbol)
+local result, current, buildresult, reached
+
+   result := list(0)
+   if *currstates ~= 0 then {
+
+      buildresult := copy(currstates)
+      while *buildresult > 0 do {
+          reached := reach(pop(buildresult), currsymbol)
+          if *reached>0 then {
+             yyunionin(result, reached)
+             }
+          }
+       }
+    return result
+end
+
+#
+# reach returns the list of states that can be reached
+# on character symbol from the state state.
+#
+procedure reach(state, symbol)
+local edgeset, answer, edgesymbol, bound1, bound2, curredge
+
+   edgeset := copy(state.edges)
+   answer := list(0)
+
+   while *edgeset > 0 do {
+      curredge := pop(edgeset)
+      edgesymbol := copy(curredge.symbol)
+      if type(edgesymbol) == "cset" then {
+         if any(edgesymbol, symbol[1]) then {
+            yyunionin(answer, curredge.destinations)
+          }
+      }
+      else {
+      if (edgesymbol[1] == symbol[1] ~== "[") |
+         (edgesymbol == symbol[1] == "[") then # sometimes a [ is just a [
+             yyunionin(answer, curredge.destinations)
+
+      else if edgesymbol[1] == "\\" then {
+         if (edgesymbol[2] == "n") & (symbol[1] == "\n") then
+            yyunionin(answer, curredge.destinations)
+         else if (edgesymbol[2] == "t") & (symbol[1] == "\t") then
+            yyunionin(answer, curredge.destinations)
+         else if (edgesymbol[2] == "r") & (symbol[1] == "\r") then
+            yyunionin(answer, curredge.destinations)
+         else if (edgesymbol[2] == "f") & (symbol[1] == "\f") then
+            yyunionin(answer, curredge.destinations)
+         else if (edgesymbol[2] == "\\") & (symbol[1] == "\\") then
+            yyunionin(answer, curredge.destinations)
+         # should handle all escapes here, and error on bogus ones
+         else if edgesymbol[2] == symbol[1] then
+            yyunionin(answer, curredge.destinations)
+         } # escape
+
+
+      }
+
+      } # while edgeset > 0
+   if *(state.dot)>0 then {
+      yyunionin(answer, state.dot)
+      }
+   return answer
+end
+
+# "recset" == "regular expression cset"
+procedure csetfromrecset(recset)
+local rv, lastchar, origcset := recset
+   if not (recset[1]=="[" & recset[-1]=="]") then
+      stop("malformed recset ", image(recset))
+   recset := recset[2:-1]
+
+   if recset[1]=="^" then { # not in this cset, subtract from &cset
+      rv := &cset -- csetfromrecset("["||recset[2:0]||"]")
+      return rv
+      }
+   # positive cset construction
+   rv := ''
+   while *recset>0 do {
+
+      if recset[1] == "-" & \lastchar & *recset>1 then
+         genrangefrom := lastchar
+      else {
+         # did not trigger a new range. Process one char
+
+         if recset[1] == "\\" then { # escape
+            recset := recset[2:0]
+            case recset[1] of {
+               "n":  recset[1] := "\n"
+               "t":  recset[1] := "\t"
+               "r":  recset[1] := "\r"
+               "v":  recset[1] := "\v"
+               "-":  recset[1] := "\-"
+               "f":  recset[1] := "\f"
+               "'":  recset[1] := "\'"
+               "\"":  recset[1] := "\""
+               "\\": recset[1] := "\\"
+               "0": {
+                  if any('01234567', recset[2]) then {
+                     if any('01234567', recset[3]) then {
+                        o := char(recset[1]*64+recset[2]*8+recset[3])
+                        recset := o || recset[4:0]
+                     }
+                     else stop("argh2 ", image(recset))
+                     }
+                  else recset[1] := "\0"
+               }
+               # should handle all escapes here, and error on bogus ones
+               default: stop("unrecognized escape ", image(recset[1]))
+               }
+            }
+
+         rv ++:= recset[1]
+
+         if \genrangefrom then { #if we have a pending range
+            ord1 := ord(genrangefrom)
+             ord2 := ord(recset[1])
+             while ord1 < ord2 do {
+               rv ++:= char(ord1)
+               ord1 +:= 1
+               }
+            genrangefrom := &null
+            }
+         lastchar := recset[1]
+          }
+       recset := recset[2:0]
+       }
+
+   return rv
+end
+
+procedure printautomaton(a)
+   write("Automaton:")
+   write("start: ", image(a.start.label),
+         " for rulenum ", image(a.start.rulenum))
+   write("states:")
+   every printstate(!a.states)
+   writes("accepting: ")
+   every writes((!a.accepting).label, " ")
+   write()
+end
+
+procedure printstate(state)
+   write("state ", state.label, " is for rule #", state.rulenum)
+   if (*state.edges)>0 then {
+      writes("\tedges: "); every printedge(!state.edges); write()
+      }
+   if *state.epsilon>0 then {
+      writes("\tepsilon: ")
+      every writes((!state.epsilon).label, " "); write()
+      }
+   if (*state.dot)>0 then {
+      writes("\tdot: ")
+      every writes((!state.dot).label, " "); write()
+      }
+end
+
+procedure printedge(edge)
+   writes(image(edge.symbol), " -> ")
+   every writes((!edge.destinations).label)
+   writes("; ")
+end
+
+procedure printstates(states)
+local statecopy, current
+
+   write("printstates size ", *states, " in entity ", image(states))
+   statecopy := copy(states)
+
+   while *statecopy > 1 do {
+      current := pop(statecopy)
+      write(current.label, ", ")
+      }
+
+   if *statecopy > 0 then {
+      current := pop(statecopy)
+      write(current.label)
+      }
+    else write("state list is empty")
+end
+procedure yylexaccepting(myautomata)
+local currstate
+
+   put(myautomata.states, currstate := anode(1, 0, [], [], []))
+   myautomata.start := currstate
+
+   put(myautomata.states, currstate := anode(2, 1, [], [], []))
+   put(myautomata.accepting, currstate)
+
+   put(myautomata.states, currstate := anode(3, 2, [], [], []))
+   put(myautomata.accepting, currstate)
+
+   put(myautomata.states, currstate := anode(4, 3, [], [], []))
+   put(myautomata.accepting, currstate)
+
+   put(myautomata.states, currstate := anode(5, 4, [], [], []))
+   put(myautomata.accepting, currstate)
+
+end
+
+procedure yylex1(myautomata)
+local currstate, state2, tempedge
+
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 1 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   state2 := currstate
+
+   tempedge := edge()
+   tempedge.symbol := csetfromrecset("[\a-zA-Z]")
+   tempedge.destinations := []
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 2 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   put(tempedge.destinations, currstate)
+
+   put(state2.edges, tempedge)
+   tempedge := edge()
+   tempedge.symbol := csetfromrecset("[0-9]")
+   tempedge.destinations := []
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 3 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   put(tempedge.destinations, currstate)
+
+   put(state2.edges, tempedge)
+   tempedge := edge()
+   tempedge.symbol := csetfromrecset("[ \\t]")
+   tempedge.destinations := []
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 4 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   put(tempedge.destinations, currstate)
+
+   put(state2.edges, tempedge)
+   tempedge := edge()
+   tempedge.symbol := csetfromrecset("[^\\n]")
+   tempedge.destinations := []
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 5 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   put(tempedge.destinations, currstate)
+
+   put(state2.edges, tempedge)
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 2 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   state2 := currstate
+
+   tempedge := edge()
+   tempedge.symbol := csetfromrecset("[\a-zA-Z]")
+   tempedge.destinations := []
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 2 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   put(tempedge.destinations, currstate)
+
+   put(state2.edges, tempedge)
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 3 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   state2 := currstate
+
+   tempedge := edge()
+   tempedge.symbol := csetfromrecset("[0-9]")
+   tempedge.destinations := []
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 3 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   put(tempedge.destinations, currstate)
+
+   put(state2.edges, tempedge)
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 4 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   state2 := currstate
+
+   tempedge := edge()
+   tempedge.symbol := csetfromrecset("[ \\t]")
+   tempedge.destinations := []
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 4 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   put(tempedge.destinations, currstate)
+
+   put(state2.edges, tempedge)
+end
+
+procedure yylexm5(myautomata)
+local currstate, state2, tempedge
+
+   currstate := pop(myautomata.states)
+   put(myautomata.states, currstate)
+
+   while currstate.label ~= 5 do {
+      currstate := pop(myautomata.states)
+      put(myautomata.states, currstate)
+      }
+   state2 := currstate
+
+end
+
+global semantic_action
+
+procedure yylex()
+static myautomata
+initial {
+   myautomata := automata()
+
+   myautomata.states := []
+   myautomata.accepting := []
+   yylexaccepting(myautomata)
+   yylex1(myautomata)
+   yylexm5(myautomata)
+
+   init_semantic_actions()
+
+}
+
+   return yyulex(myautomata)
+
+end
+
+procedure init_semantic_actions()
+
+   semantic_action := table()
+   semantic_action[1] := semantic_action_1
+   semantic_action[2] := semantic_action_2
+   semantic_action[3] := semantic_action_3
+   semantic_action[4] := semantic_action_4
+
+end
+
+procedure semantic_action_1()
+   { return 1; }
+end
+
+procedure semantic_action_2()
+   { return 2; }
+end
+
+procedure semantic_action_3()
+   { }
+end
+
+procedure semantic_action_4()
+   { fprintf(stderr, "unrecognized character %d yyleng %d\n",
+	       yytext[0], yyleng);
+              exit(1); }
+end
+
