@@ -77,21 +77,6 @@ class UIDE : Dialog(
    ui_Preferences
    )
 
-#This method works fine with resize() but using Dialog otherwise.
-#Per Jonah, might need to specify where the labels are.
-   #
-   # Nearly the same as inherited by Dialog, except for the resize.
-   # Duplicating to fix the artifacts on tooltips.
-   # Hide the tooltip label.
-   # @p
-#   method hide_tooltip()
-#      CopyArea(self.tooltip_win, cwin, 0, 0, self.tooltip_w+50, self.tooltip_h, self.tooltip_x, self.tooltip_y)
-#      WClose(self.tooltip_win)
-#      self.tooltip_win := &null
-#      #Removing resize so that it doesn't keep flashing.
-#      #self.resize()
-#   end
-
    # as inherited from Dialog, except non-fatal if the requested font fails.
    method open_win()
       local i
