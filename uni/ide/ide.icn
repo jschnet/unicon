@@ -226,6 +226,7 @@ class IDE (
       uidlog.FileTabSet.set_which_one(uidlog.FileTabSet.children[-1])
       handle_update()
       uidlog.FileTabSet.resize()
+      uidlog.ivib_maindialog.canvas.erase_and_display()
    end
 
    method on_save_btn(ev, c)
