@@ -62,6 +62,8 @@ class BufferTabSet : TabSet()
    method set_which_one(x)
       self.TabSet.set_which_one(x)
       uidlog.set_focus(ide.CurrentEditBox())
+      if \uidlog.ivib_maindialog then if \uidlog.FileTabSet.get_which_one().filename then uidlog.ivib_maindialog.op_open_file(uidlog.FileTabSet.get_which_one().filename)
+      if \uidlog.ivib_maindialog then if \uidlog.FileTabSet.get_which_one().filename then uidlog.ivib_maindialog.canvas.restore()
       return x
    end
 
