@@ -219,6 +219,8 @@ class IvibTab : Component(
    #
    method save_extra_undo()
       self.extra_undo := self.canvas.dup()
+      self.canvas.set_pos(CANVAS_SURROUND, self.tool_area_height + CANVAS_SURROUND)
+      self.canvas.restore()
    end
 
    #
@@ -226,6 +228,8 @@ class IvibTab : Component(
    #
    method use_extra_undo()
       self.undo_to(self.extra_undo)
+      self.canvas.set_pos(CANVAS_SURROUND, self.tool_area_height + CANVAS_SURROUND)
+      self.canvas.restore()
    end
 
    #

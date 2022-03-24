@@ -1583,18 +1583,6 @@ $endif
       }
 
       component_load.connect(ivib_functions, "op_component_load_10", ACTION_EVENT)
-      #checkboxgroup_button.connect(ivib_functions, "op_CheckBoxGroup", ACTION_EVENT)
-      #buttongroup_button.connect(ivib_functions, "op_ButtonGroup", ACTION_EVENT)
-      #delete_button.connect(ivib_functions, "op_Delete", ACTION_EVENT)
-      #undo_button.connect(ivib_functions, "op_Undo", ACTION_EVENT)
-      #redo_button.connect(ivib_functions, "op_Redo", ACTION_EVENT)
-      #centre_horiz_button.connect(ivib_functions, "op_Centre_horiz", ACTION_EVENT)
-      #centre_vert_button.connect(ivib_functions, "op_Centre_vert", ACTION_EVENT)
-      #align_horiz_button.connect(ivib_functions, "op_Align_horiz", ACTION_EVENT)
-      #align_vert_button.connect(ivib_functions, "op_Align_vert", ACTION_EVENT)
-      #grid_button.connect(ivib_functions, "op_Grid", ACTION_EVENT)
-      #copy_button.connect(ivib_functions, "op_Copy", ACTION_EVENT)
-      #push_code_button.connect(ivib_functions, "op_push_code_to_ui", ACTION_EVENT)
       check_boxes.connect(ivib_functions, "op_check_boxes", ACTION_EVENT)
       button_groups.connect(ivib_functions, "op_button_groups", ACTION_EVENT)
       centre_horiz.connect(ivib_functions, "op_Centre_horiz", ACTION_EVENT)
