@@ -37,6 +37,34 @@ link ide, mainbar
 
 ############################################################################
 #
+# Unicon's Ivib specific toolbar.
+#
+class IvibToolBar : ToolBar(x1, y1, img_w, img_h, bg)
+   method add_button(t)
+      if /img_w then {
+         img_w := t.img_w
+         img_h := t.img_h
+         set_size(16 * img_w, 2 * img_h)
+      }
+      t.set_pos(x1, y1)
+      t.set_no_keyboard()
+      bg.add(t)
+      self.add(t)
+      x1 +:= img_w
+      if *get_children() == 16 then {
+         y1 +:= img_h
+         x1 := 0
+      }
+   end
+
+   initially()
+      self.ToolBar.initially()
+      x1 := y1 := 0
+      bg := ButtonGroup()
+end
+
+############################################################################
+#
 # Class for building integrated version of ivib.
 #
 $define CANVAS_SURROUND 30
@@ -1065,7 +1093,7 @@ class IvibTab : Component(
                  CanvasTreeUI()
                  ]
 
-         tb := CustomToolBar()
+         tb := IvibToolBar()
          tb.set_pos(0, 0)
          tb.set_size("50%", "9%")
 
