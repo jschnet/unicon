@@ -210,7 +210,7 @@ class IDE (
       if \decision == "Cancel" then return "Cancel"
       if \decision == "Save" then on_save_btn(, c)
 
-      if *uidlog.FileTabSet.children = 1 then new_tabitem( , 0, "", "", CurrentTabItem().filedirectory)
+      if *uidlog.FileTabSet.children = 1 then new_tabitem( , 0, "Untitled.icn", "", CurrentTabItem().filedirectory)
 
       if /modified then { # close a non-modified buffer (no * suffix)
          uidlog.FileTabSet.remove(c)

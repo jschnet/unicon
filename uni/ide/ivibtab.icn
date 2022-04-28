@@ -1043,7 +1043,8 @@ class IvibTab : Component(
          op_save_ivib(uidlog.FileTabSet.get_which_one().filename)
          ide.updatefile(uidlog.FileTabSet.get_which_one().filename)
       } else {
-         op_save_ivib(self.canvas.filename)
+         if self.canvas.filename == "Untitled.icn" then ide.on_saveas_btn() | fail
+         op_save_ivib(self.canvas.filename) | fail
          ide.updatefile(self.canvas.filename)
       }
    end
